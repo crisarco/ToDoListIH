@@ -1,16 +1,29 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Esta es la vista de Home</h1>
+    <button @click="signOut">SignOut</button>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import { mapState, mapActions } from 'pinia';
+import userStore from '@/store/user';
 
 export default {
   name: 'HomeView',
   components: { },
+  computed: {
+    ...mapState(userStore, ['user']),
+  },
+  methods: {
+    ...mapActions(userStore, ['signOut']),
+  },
+  watch: {
+    user() {
+      if (!this.user) {
+        this.$router.push({ path: '/auth' });
+      }
+    },
+  },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav v-if="user !== null">
     <router-link to="/">Home</router-link> |
   </nav>
   <router-view/>
@@ -19,16 +19,18 @@ export default {
   },
   async created() {
     try {
-      await this.userStore.fetchUser();
+      await this.fetchUser();
       console.log(this.user);
-      if(!this.user) {
-        this.$router.push({ path: '/auth'});
+      if (!this.user) {
+        this.$router.push({ path: '/auth' });
       } else {
-
+        this.$router.push({ path: '/' });
       }
+    } catch (e) {
+      console.error(e);
     }
-  }
-}
+  },
+};
 </script>
 
 <style>
