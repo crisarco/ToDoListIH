@@ -7,11 +7,15 @@ export default defineStore('tasks', {
   }),
   actions: {
     async fetchTasks() {
-      const { data: tasks } = await supabase
+      const { data, error } = await supabase
         .from('tasks')
         .select('*')
         .order('id', { ascending: false });
-      this.tasks = tasks;
+      if (error) throw error;
+      this.tasks = data;
+    },
+    resetStore() {
+      this.tasks = null;
     },
   },
 });
