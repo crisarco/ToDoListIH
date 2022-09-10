@@ -1,18 +1,20 @@
 <template>
-  <div v-if="showsignin">
-    <SignIn />
-    <div class="texto-showsignin">
-      <p>¡Quiero registrarme!</p>
-      <button @click="showSignIn">Registrarme</button>
+  <div class="container-authview">
+    <div v-if="showsignin">
+      <SignIn />
+      <div class="texto-showsignin">
+        <p>¡Quiero registrarme!</p>
+        <button class="btn btn-info btn-md" @click="showSignIn">Registrarme</button>
+      </div>
     </div>
-  </div>
-  <div v-else>
-    <SignUp />
-    <div class="texto-showsignin">
-      <p>¡Ya estoy registrado!</p>
-      <button @click="showSignIn">Entrar</button>
+    <div v-else>
+      <SignUp />
+      <div class="texto-showsignin">
+        <p>¡Ya estoy registrado!</p>
+        <button class="btn btn-info btn-md" @click="showSignIn">Entrar</button>
+      </div>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -48,9 +50,18 @@ export default {
 </script>
 
 <style>
+.container-authview {
+  display: flex;
+  flex-direction: column;
+}
+
 .box {
   width: 500px;
   margin: 200px 0;
+  /* background-image: url('@/assets/nuveimg.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center; */
 }
 
 .shape1 {
@@ -136,5 +147,12 @@ export default {
 
 .form {
   margin-left: 145px;
+  margin-top: 20px;
+}
+
+.texto-showsignin {
+  align-items: center;
+  justify-items: center;
+  margin: 30px;
 }
 </style>

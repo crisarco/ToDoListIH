@@ -17,5 +17,20 @@ export default defineStore('tasks', {
     resetStore() {
       this.tasks = null;
     },
+    async insertTask(title, userId) {
+      const { error } = await supabase
+        .from('tasks')
+        .insert([{ title, user_id: userId }]);
+      if (error) throw error;
+      this.fetchTasks();
+    },
+    async deleteTask(id, userId) {
+      const { error } = await supabase
+        .from('tasks')
+        .delete()
+        .match({ id, user_id: userId });
+      if (error) throw error;
+      this.fetchTasks();
+    },
   },
 });

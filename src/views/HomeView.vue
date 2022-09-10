@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <h1>Esta es la vista de Home</h1>
-    <button @click="handleSignOut">SignOut</button>
+    <button class="btn btn-info btn-md" @click="handleSignOut">SignOut</button>
     <br>
-    <div><p v-for="task in tasks" :key="task.id">{{ task.title }}</p></div>
+    <TaskComponent/>
   </div>
 </template>
 
@@ -11,10 +11,11 @@
 import { mapState, mapActions } from 'pinia';
 import userStore from '@/store/user';
 import taskStore from '@/store/task';
+import TaskComponent from '@/components/TaskComponent.vue';
 
 export default {
   name: 'HomeView',
-  components: { },
+  components: { TaskComponent },
   computed: {
     ...mapState(userStore, ['user']),
     ...mapState(taskStore, ['tasks']),
@@ -24,8 +25,12 @@ export default {
     ...mapActions(taskStore, ['fetchTasks', 'resetStore']),
 
     handleSignOut() {
-      this.signOut();
-      this.resetStore();
+      try {
+        this.signOut();
+        this.resetStore();
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
   watch: {

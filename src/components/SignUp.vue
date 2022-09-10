@@ -30,7 +30,7 @@
                         name="password"
                         id="password"
                         class="form-control" />
-                </label><br>
+                </label><br><br>
               </div>
               <div class="form-group">
                 <button class="btn btn-info btn-md" @click.prevent="handleSignUp">
@@ -61,8 +61,12 @@ export default {
     ...mapActions(userStore, ['signUp']),
 
     handleSignUp() {
-      if (this.email && this.password) {
-        this.signUp(this.email, this.password);
+      try {
+        if (this.email && this.password) {
+          this.signUp(this.email, this.password);
+        }
+      } catch (e) {
+        console.error(e);
       }
     },
   },

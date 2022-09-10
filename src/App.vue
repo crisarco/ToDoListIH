@@ -3,14 +3,17 @@
     <router-link to="/">Home</router-link> |
   </nav>
   <router-view/>
+  <ModalBox/>
 </template>
 
 <script>
 import userStore from '@/store/user';
 import { mapState, mapActions } from 'pinia';
+import ModalBox from '@/components/ModalBox.vue';
 
 export default {
   name: 'App',
+  components: { ModalBox },
   computed: {
     ...mapState(userStore, ['user']),
   },
