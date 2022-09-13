@@ -12,6 +12,7 @@
     <p class="task">{{ task.inserted_at }}</p>
     <p v-if="task.is_complete" class="task">Done</p>
     <p v-else class="task">ToDo</p>
+    <button @click="handleModifyTask(taskTitle, task.id, user.id)">Modify Task</button>
     <button @click="handleDeleteTask(task.id, user.id)">Delete Task</button>
   </div>
 </template>
@@ -33,7 +34,7 @@ export default {
     ...mapState(userStore, ['user']),
   },
   methods: {
-    ...mapActions(taskStore, ['insertTask', 'deleteTask']),
+    ...mapActions(taskStore, ['insertTask', 'deleteTask', 'modifyTask']),
 
     handleInsertTask(title, userId) {
       try {
@@ -45,6 +46,13 @@ export default {
     handleDeleteTask(id, userId) {
       try {
         this.deleteTask(id, userId);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    handleModifyTask(title, id, userId) {
+      try {
+        this.modifyTask(title, id, userId);
       } catch (e) {
         console.log(e);
       }

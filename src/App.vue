@@ -3,7 +3,14 @@
     <router-link to="/">Home</router-link> |
   </nav>
   <router-view/>
-  <ModalBox/>
+  <button @click="toggleModal"><a href="#modal1">MODAL</a></button>
+  <div v-if="showModal">
+    <ModalBox @close="toggleModal">
+      <label for="modifytask">
+        <input type="text"/>
+      </label>
+    </ModalBox>
+</div>
 </template>
 
 <script>
@@ -14,11 +21,20 @@ import ModalBox from '@/components/ModalBox.vue';
 export default {
   name: 'App',
   components: { ModalBox },
+  data() {
+    return {
+      showModal: false,
+    };
+  },
   computed: {
     ...mapState(userStore, ['user']),
   },
   methods: {
     ...mapActions(userStore, ['fetchUser']),
+
+    toggleModal() {
+      this.showModal = !this.showModal;
+    },
   },
   async created() {
     try {

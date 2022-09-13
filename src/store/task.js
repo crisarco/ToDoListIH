@@ -32,5 +32,13 @@ export default defineStore('tasks', {
       if (error) throw error;
       this.fetchTasks();
     },
+    async modifyTask(title, id, userId) {
+      const { error } = await supabase
+        .from('tasks')
+        .update({ title })
+        .match({ id, user_id: userId });
+      if (error) throw error;
+      this.fetchTasks();
+    },
   },
 });

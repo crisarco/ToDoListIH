@@ -1,17 +1,20 @@
 <template>
-  <h3><a href="#modal1">MODAL</a></h3>
-  <div id="modal1" class="modalmask">
+  <div id="modal1" class="modalmask" @click.self="closeModal" @keydown="close" >
     <div class="modalbox movedown">
         <a href="#close" title="Close" class="close">X</a>
-        <h2>Mensaje de Error</h2>
-        <p>Aquí puedes incluir cualquier cosa como vídeos, mapas, formularios...</p>
+        <slot></slot>
     </div>
 </div>
 </template>
 
 <script>
 export default {
-
+  name: 'ModalBox',
+  methods: {
+    closeModal() {
+      this.$emit('close');
+    },
+  },
 };
 </script>
 
@@ -39,6 +42,7 @@ export default {
 /*Formato de la ventana*/
 .modalbox{
     width: 400px;
+    height: 200px;
     position: relative;
     padding: 5px 20px 13px 20px;
     background: #fff;
