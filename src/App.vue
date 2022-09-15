@@ -1,13 +1,14 @@
 <template>
   <nav v-if="user !== null">
-    <router-link to="/">Home</router-link> |
+    <button class="authbutton" @click="handleSignOut">SignOut</button>
   </nav>
   <router-view/>
-  <button @click="toggleModal"><a href="#modal1">MODAL</a></button>
+  <button @click="toggleModal">MODAL</button>
   <div v-if="showModal">
     <ModalBox @close="toggleModal">
       <label for="modifytask">
         <input type="text"/>
+        <button @click="toggleModal">Save</button>
       </label>
     </ModalBox>
 </div>
@@ -30,12 +31,23 @@ export default {
     ...mapState(userStore, ['user']),
   },
   methods: {
-    ...mapActions(userStore, ['fetchUser']),
+    ...mapActions(userStore, ['fetchUser', 'signOut']),
+
+    handleSignOut() {
+      try {
+        this.signOut();
+        this.resetStore();
+      } catch (e) {
+        console.log(e);
+      }
+    },
 
     toggleModal() {
       this.showModal = !this.showModal;
+      console.log(this.showModal);
     },
   },
+
   async created() {
     try {
       await this.fetchUser();
@@ -54,23 +66,43 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Patrick Hand', Arial, Helvetica, sans-serif;
+  font-size: 24px;
   text-align: center;
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
+input {
+  margin-right: 10px;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+h1 {
+  font-family: 'Rampart One';
+  font-size: 3em;
+  color: #3498db;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+.authbutton {
+  border-color: #3498db;
+  color: #fff;
+  font-size: 20px;
+  width: 150px;
+  border-radius: 10px;
+  padding: 5px 10px;
+  box-shadow: 0 0 40px 40px #3498db inset, 0 0 0 0 #3498db;
+  -webkit-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
+}
+
+.authbutton:hover {
+  box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+  color:#2c3e50;
+  font-weight: 400;
+  letter-spacing: 5px;
+}
+
+nav .authbutton {
+  margin: 20px;
+  float: right;
 }
 </style>
