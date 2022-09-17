@@ -3,13 +3,12 @@
     <button class="authbutton" @click="handleSignOut">SignOut</button>
   </nav>
   <router-view/>
-  <button @click="toggleModal">MODAL</button>
   <div v-if="showModal">
-    <ModalBox @close="toggleModal">
-      <label for="modifytask">
-        <input type="text"/>
-        <button @click="toggleModal">Save</button>
-      </label>
+    <ModalBox @close="toggleModal" :modalTitle="modalTitle" :modalMsg="modalMsg">
+        <h1>{{ modalTitle }}</h1>
+        <p>{{ modalMsg }}</p>
+        <br>
+        <button @click="toggleModal">Close</button>
     </ModalBox>
 </div>
 </template>
@@ -25,6 +24,8 @@ export default {
   data() {
     return {
       showModal: false,
+      modalTitle: '',
+      modalMsg: '',
     };
   },
   computed: {
@@ -38,13 +39,13 @@ export default {
         this.signOut();
         this.resetStore();
       } catch (e) {
-        console.log(e);
+        this.modalTitle = 'Error';
+        this.modalMsg = e;
       }
     },
 
     toggleModal() {
       this.showModal = !this.showModal;
-      console.log(this.showModal);
     },
   },
 
@@ -58,7 +59,8 @@ export default {
         this.$router.push({ path: '/' });
       }
     } catch (e) {
-      console.error(e);
+      this.modalTitle = 'Error';
+      this.modalMsg = e;
     }
   },
 };
@@ -79,6 +81,12 @@ input {
 h1 {
   font-family: 'Rampart One';
   font-size: 3em;
+  color: #3498db;
+}
+
+h3 {
+  font-family: 'Rampart One';
+  font-size: 2em;
   color: #3498db;
 }
 

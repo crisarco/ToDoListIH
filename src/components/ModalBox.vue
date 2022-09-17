@@ -1,8 +1,20 @@
 <template>
-    <div class="backdrop" @click.self="closeModal" @keydown="close">
-        <div class="modalbox">
-            <a href="#close" title="Close" class="close">X</a>
-            <slot></slot>
+    <div v-if="showModal">
+        <div class="backdrop" @click.self="closeModal" @keydown="close">
+            <div v-if="theme === 'modifytask'" class="modalbox">
+                <h3>Modify Task</h3>
+                <p>Modify your task title</p>
+                <label for="modifytask">
+                    <input class="addtaskinput" type="text"
+                            v-model="taskTitleModify" :placeholder=currentTaskTitle />
+                <button class="authbutton modalbutton"
+                        @click="handleModifyTask(taskTitleModify, currentTaskId,
+                                                currentUserId, true)">
+                        Save
+                </button>
+                <button class="authbutton modalbutton" @click="toggleModal">Cancel</button>
+                </label>
+            </div>
         </div>
     </div>
 </template>
@@ -10,9 +22,26 @@
 <script>
 export default {
   name: 'ModalBox',
+  data() {
+    return {
+      showModal: false,
+      taskTitleModify: '',
+    };
+  },
+  props: ['theme', 'setShowModal', 'currentTaskId', 'currentUserId'],
   methods: {
     closeModal() {
-      this.$emit('close');
+      this.showModal = false;
+    },
+    handleModifyTask(title, id, userId, show) {
+      try {
+        this.showModal = show;
+        this.modifyTask(title, id, userId);
+        this.showModal = false;
+        this.taskTitleModify = '';
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };
@@ -20,7 +49,7 @@ export default {
 
 <style>
 .modalbox {
-    width: 400px;
+    width: 450px;
     padding: 20px;
     margin: 100px auto;
     background: white;

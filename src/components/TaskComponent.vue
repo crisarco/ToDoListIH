@@ -2,7 +2,7 @@
   <div class="taskcontainer">
     <label for="addtask" class="addtasklabel">
       <input type="text" id="addtask" class="addtaskinput" v-model="taskTitle"/>
-      <button class="authbutton addtaskbutton" @click="handleInsertTask(taskTitle, user.id)">
+      <button class="authbutton" @click="handleInsertTask(taskTitle, user.id)">
         Add Task
       </button>
     </label>
@@ -10,26 +10,40 @@
       <label for="markascompleted">
         <input type="checkbox" id="markascompleted">
       </label>
-      <p class="tasktitle">{{ task.title}}</p>
+      <p class="task">{{ task.title}}</p>
       <p class="task">{{ transformDate(task.inserted_at) }}</p>
       <p v-if="task.is_complete" class="task">Done</p>
       <p v-else class="task">ToDo</p>
-      <button @click="handleModifyTask(taskTitle, task.id, user.id)">Modify Task</button>
+      <button @click="modifyTaskParams(task.id, task.title, user.id)">Modify Task</button>
+      {{ showModal }}
       <button @click="handleDeleteTask(task.id, user.id)">Delete Task</button>
     </div>
   </div>
+  <div v-if="showModal">
+    <ModalBox theme="modifytask"
+              :ShowModal="true"
+              :currentTaskId="currentTaskId"
+              :currentTaskTitle="currentTaskTitle"
+              :currentUserId="currentUserId"/>
+</div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'pinia';
 import taskStore from '@/store/task';
 import userStore from '@/store/user';
+import ModalBox from './ModalBox.vue';
 
 export default {
   name: 'TaskComponent',
+  components: { ModalBox },
   data() {
     return {
       taskTitle: '',
+      showModal: false,
+      currentTaskId: null,
+      currentTaskTitle: '',
+      currentUserId: '',
     };
   },
   computed: {
@@ -42,6 +56,7 @@ export default {
     handleInsertTask(title, userId) {
       try {
         this.insertTask(title, userId);
+        this.taskTitle = '';
       } catch (e) {
         console.log(e);
       }
@@ -53,17 +68,16 @@ export default {
         console.log(e);
       }
     },
-    handleModifyTask(title, id, userId) {
-      try {
-        this.modifyTask(title, id, userId);
-      } catch (e) {
-        console.log(e);
-      }
-    },
     transformDate(date) {
       const newDate = new Date(date);
       const dateFormated = newDate.toLocaleDateString();
       return dateFormated;
+    },
+    modifyTaskParams(taskId, title, userId) {
+      this.currentTaskId = taskId;
+      this.currentTaskTitle = title;
+      this.currentUserId = userId;
+      this.showModal = true;
     },
   },
 };
@@ -99,5 +113,9 @@ export default {
 
 .addtaskinput:focus {
   box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+}
+
+.modalbutton {
+  margin: 20px;
 }
 </style>
