@@ -1,5 +1,5 @@
 <template>
-    <div v-if="showModal">
+    <div v-if="setShowModal">
         <div class="backdrop" @click.self="closeModal" @keydown="close">
             <div v-if="theme === 'modifytask'" class="modalbox">
                 <h3>Modify Task</h3>
@@ -8,11 +8,10 @@
                     <input class="addtaskinput" type="text"
                             v-model="taskTitleModify" :placeholder=currentTaskTitle />
                 <button class="authbutton modalbutton"
-                        @click="handleModifyTask(taskTitleModify, currentTaskId,
-                                                currentUserId, true)">
+                        @click="handleModifyTask">
                         Save
                 </button>
-                <button class="authbutton modalbutton" @click="toggleModal">Cancel</button>
+                <button class="authbutton modalbutton" @click="closeModal">Cancel</button>
                 </label>
             </div>
         </div>
@@ -28,16 +27,24 @@ export default {
       taskTitleModify: '',
     };
   },
-  props: ['theme', 'setShowModal', 'currentTaskId', 'currentUserId'],
+  props: {
+    theme: String,
+    setShowModal: Boolean,
+    currentTaskId: Number,
+    currentUserId: String,
+    currentTaskTitle: String,
+  },
   methods: {
     closeModal() {
-      this.showModal = false;
+      this.$emit('close');
     },
-    handleModifyTask(title, id, userId, show) {
+    handleModifyTask() {
       try {
-        this.showModal = show;
-        this.modifyTask(title, id, userId);
-        this.showModal = false;
+        const taskData = {
+          title: this.taskTitleModify,
+          taskId: this.currentTaskId,
+        };
+        this.$emit('modify-task', taskData);
         this.taskTitleModify = '';
       } catch (e) {
         console.log(e);

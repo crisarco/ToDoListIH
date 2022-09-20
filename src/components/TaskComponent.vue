@@ -15,17 +15,16 @@
       <p v-if="task.is_complete" class="task">Done</p>
       <p v-else class="task">ToDo</p>
       <button @click="modifyTaskParams(task.id, task.title, user.id)">Modify Task</button>
-      {{ showModal }}
       <button @click="handleDeleteTask(task.id, user.id)">Delete Task</button>
     </div>
   </div>
-  <div v-if="showModal">
-    <ModalBox theme="modifytask"
-              :ShowModal="true"
-              :currentTaskId="currentTaskId"
-              :currentTaskTitle="currentTaskTitle"
-              :currentUserId="currentUserId"/>
-</div>
+  <ModalBox @modify-task="handleModifyTask"
+            @close="handleCloseModal"
+            theme="modifytask"
+            :setShowModal="showModal"
+            :currentTaskId="currentTaskId"
+            :currentTaskTitle="currentTaskTitle"
+            :currentUserId="currentUserId"/>
 </template>
 
 <script>
@@ -78,6 +77,21 @@ export default {
       this.currentTaskTitle = title;
       this.currentUserId = userId;
       this.showModal = true;
+    },
+    handleModifyTask(taskData) {
+      try {
+        console.log(taskData);
+        this.modifyTask(taskData.title, taskData.taskId, this.user.id);
+        this.handleCloseModal();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    handleCloseModal() {
+      this.currentTaskId = 0;
+      this.currentTaskTitle = '';
+      this.currentUserId = '';
+      this.showModal = false;
     },
   },
 };
