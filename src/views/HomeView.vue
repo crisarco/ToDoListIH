@@ -1,7 +1,6 @@
 <template>
   <div class="home">
-    <h1>Esta es la vista de Home</h1>
-    <button class="btn btn-info btn-md" @click="handleSignOut">SignOut</button>
+    <h1>My things</h1>
     <br>
     <TaskComponent/>
   </div>
@@ -51,5 +50,10 @@ export default {
 </script>
 
 <style>
+.home {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 
 </style>

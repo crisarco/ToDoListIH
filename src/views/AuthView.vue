@@ -14,7 +14,15 @@
         <button class="btn btn-info btn-md" @click="showSignIn">Entrar</button>
       </div>
     </div>
-</div>
+  </div>
+  <div v-if="showModal">
+    <ModalBox @close="toggleModal" :modalTitle="modalTitle" :modalMsg="modalMsg">
+        <h1>{{ modalTitle }}</h1>
+        <p>{{ modalMsg }}</p>
+        <br>
+        <button @click="toggleModal">Close</button>
+    </ModalBox>
+  </div>
 </template>
 
 <script>
@@ -22,13 +30,15 @@ import { mapState } from 'pinia';
 import userStore from '@/store/user';
 import SignIn from '@/components/SignIn.vue';
 import SignUp from '@/components/SignUp.vue';
+import ModalBox from '@/components/ModalBox.vue';
 
 export default {
   name: 'AuthView',
-  components: { SignIn, SignUp },
+  components: { SignIn, SignUp, ModalBox },
   data() {
     return {
       showsignin: true,
+      showModal: false,
     };
   },
   computed: {
@@ -37,6 +47,9 @@ export default {
   methods: {
     showSignIn() {
       this.showsignin = !this.showsignin;
+    },
+    toggleModal() {
+      this.showModal = !this.showModal;
     },
   },
   watch: {

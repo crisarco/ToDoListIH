@@ -1,60 +1,74 @@
 <template>
-  <h3><a href="#modal1">MODAL</a></h3>
-  <div id="modal1" class="modalmask">
-    <div class="modalbox movedown">
-        <a href="#close" title="Close" class="close">X</a>
-        <h2>Mensaje de Error</h2>
-        <p>Aquí puedes incluir cualquier cosa como vídeos, mapas, formularios...</p>
+    <div v-if="setShowModal">
+        <div class="backdrop" @click.self="closeModal" @keydown="close">
+            <div v-if="theme === 'modifytask'" class="modalbox">
+                <h3>Modify Task</h3>
+                <p>Modify your task title</p>
+                <label for="modifytask">
+                    <input class="addtaskinput" type="text"
+                            v-model="taskTitleModify" :placeholder=currentTaskTitle />
+                <button class="authbutton modalbutton"
+                        @click="handleModifyTask">
+                        Save
+                </button>
+                <button class="authbutton modalbutton" @click="closeModal">Cancel</button>
+                </label>
+            </div>
+        </div>
     </div>
-</div>
 </template>
 
 <script>
 export default {
-
+  name: 'ModalBox',
+  data() {
+    return {
+      showModal: false,
+      taskTitleModify: '',
+    };
+  },
+  props: {
+    theme: String,
+    setShowModal: Boolean,
+    currentTaskId: Number,
+    currentUserId: String,
+    currentTaskTitle: String,
+  },
+  methods: {
+    closeModal() {
+      this.$emit('close');
+    },
+    handleModifyTask() {
+      try {
+        const taskData = {
+          title: this.taskTitleModify,
+          taskId: this.currentTaskId,
+        };
+        this.$emit('modify-task', taskData);
+        this.taskTitleModify = '';
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
 };
 </script>
 
 <style>
-.modalmask {
-    position: fixed;
-    font-family: Arial, sans-serif;
+.modalbox {
+    width: 450px;
+    padding: 20px;
+    margin: 100px auto;
+    background: white;
+    border-radius: 10px;
+}
+
+.backdrop {
     top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 99999;
-    opacity:0;
-    -webkit-transition: opacity 400ms ease-in;
-    -moz-transition: opacity 400ms ease-in;
-    transition: opacity 400ms ease-in;
-    pointer-events: none;
-}
-.modalmask:target {
-    opacity:1;
-    pointer-events: auto;
-}
-
-/*Formato de la ventana*/
-.modalbox{
-    width: 400px;
-    position: relative;
-    padding: 5px 20px 13px 20px;
-    background: #fff;
-    border-radius:3px;
-    -webkit-transition: all 500ms ease-in;
-    -moz-transition: all 500ms ease-in;
-    transition: all 500ms ease-in;
-}
-
-/*Movimientos*/
-.movedown {
-    margin: 0 auto;
-}
-
-.modalmask:target .movedown{
-    margin:10% auto;
+    position: fixed;
+    background: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
 }
 
 /*Boton de cerrar*/
@@ -74,7 +88,7 @@ export default {
 }
 
 .close:hover {
-    background: #FAAC58;
-    color:#222;
+    background: #0074d9;
+    color:#FFFFFF;
 }
 </style>
