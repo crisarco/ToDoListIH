@@ -1,16 +1,19 @@
 <template>
-  <nav>
+  <nav v-if="user !== null">
     <router-link to="/">Home</router-link> |
   </nav>
   <router-view/>
+  <ModalBox/>
 </template>
 
 <script>
 import userStore from '@/store/user';
 import { mapState, mapActions } from 'pinia';
+import ModalBox from '@/components/ModalBox.vue';
 
 export default {
   name: 'App',
+  components: { ModalBox },
   computed: {
     ...mapState(userStore, ['user']),
   },
@@ -19,16 +22,18 @@ export default {
   },
   async created() {
     try {
-      await this.userStore.fetchUser();
+      await this.fetchUser();
       console.log(this.user);
-      if(!this.user) {
-        this.$router.push({ path: '/auth'});
+      if (!this.user) {
+        this.$router.push({ path: '/auth' });
       } else {
-
+        this.$router.push({ path: '/' });
       }
+    } catch (e) {
+      console.error(e);
     }
-  }
-}
+  },
+};
 </script>
 
 <style>
