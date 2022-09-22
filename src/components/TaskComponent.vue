@@ -7,15 +7,19 @@
       </button>
     </label>
     <div class="task-element" v-for="task in tasks" :key="task.id">
-      <label for="markascompleted">
-        <input type="checkbox" id="markascompleted">
-      </label>
       <p class="task">{{ task.title}}</p>
-      <p class="task">{{ transformDate(task.inserted_at) }}</p>
+      <!-- <p class="task">{{ transformDate(task.inserted_at) }}</p> -->
       <p v-if="task.is_complete" class="task">Done</p>
       <p v-else class="task">ToDo</p>
-      <button @click="modifyTaskParams(task.id, task.title, user.id)">Modify Task</button>
-      <button @click="handleDeleteTask(task.id, user.id)">Delete Task</button>
+      <button class="taskbutton" id="modifybutton"
+              @click="modifyTaskParams(task.id, task.title)">
+      </button>
+      <button class="taskbutton" id="donebutton"
+              @click="toggleDoneButton(task.id, task.is_complete)">
+      </button>
+      <button class="taskbutton" id="deletebutton"
+              @click="handleDeleteTask(task.id, user.id)">
+      </button>
     </div>
   </div>
   <ModalBox @modify-task="handleModifyTask"
@@ -23,8 +27,7 @@
             theme="modifytask"
             :setShowModal="showModal"
             :currentTaskId="currentTaskId"
-            :currentTaskTitle="currentTaskTitle"
-            :currentUserId="currentUserId"/>
+            :currentTaskTitle="currentTaskTitle"/>
 </template>
 
 <script>
@@ -42,7 +45,6 @@ export default {
       showModal: false,
       currentTaskId: null,
       currentTaskTitle: '',
-      currentUserId: '',
     };
   },
   computed: {
@@ -50,7 +52,7 @@ export default {
     ...mapState(userStore, ['user']),
   },
   methods: {
-    ...mapActions(taskStore, ['insertTask', 'deleteTask', 'modifyTask']),
+    ...mapActions(taskStore, ['insertTask', 'deleteTask', 'modifyTask', 'modifyStateTask']),
 
     handleInsertTask(title, userId) {
       try {
@@ -72,16 +74,14 @@ export default {
       const dateFormated = newDate.toLocaleDateString();
       return dateFormated;
     },
-    modifyTaskParams(taskId, title, userId) {
+    modifyTaskParams(taskId, title) {
       this.currentTaskId = taskId;
       this.currentTaskTitle = title;
-      this.currentUserId = userId;
       this.showModal = true;
     },
     handleModifyTask(taskData) {
       try {
-        console.log(taskData);
-        this.modifyTask(taskData.title, taskData.taskId, this.user.id);
+        this.modifyTask(taskData.title, taskData.taskId);
         this.handleCloseModal();
       } catch (e) {
         console.log(e);
@@ -90,8 +90,10 @@ export default {
     handleCloseModal() {
       this.currentTaskId = 0;
       this.currentTaskTitle = '';
-      this.currentUserId = '';
       this.showModal = false;
+    },
+    toggleDoneButton(taskId, state) {
+      this.modifyStateTask(taskId, !state);
     },
   },
 };
@@ -111,6 +113,10 @@ export default {
   margin-bottom: 20px;
 }
 
+.task {
+  font-size: 30px;
+}
+
 .addtasklabel {
   margin-top: 20px;
   margin-bottom: 40px;
@@ -123,13 +129,37 @@ export default {
   border: 2px solid #ddd;
   color: #555;
   border-radius: 10px;
-}
-
-.addtaskinput:focus {
-  box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+  margin-right: 10px;
 }
 
 .modalbutton {
   margin: 20px;
+}
+
+.taskbutton {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #3498db;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 30px;
+}
+
+.taskbutton:hover {
+  box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+  background-color: white;
+}
+
+#deletebutton {
+  background-image: url("@/assets/delete.png");
+}
+
+#modifybutton {
+  background-image: url("@/assets/pencil-2.png");
+}
+
+#donebutton {
+  background-image: url("@/assets/tick.png");
 }
 </style>

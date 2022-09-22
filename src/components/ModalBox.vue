@@ -31,7 +31,6 @@ export default {
     theme: String,
     setShowModal: Boolean,
     currentTaskId: Number,
-    currentUserId: String,
     currentTaskTitle: String,
   },
   methods: {
@@ -69,26 +68,5 @@ export default {
     background: rgba(0,0,0,0.5);
     width: 100%;
     height: 100%;
-}
-
-/*Boton de cerrar*/
-.close {
-    background: #606061;
-    color: #FFFFFF;
-    line-height: 25px;
-    position: absolute;
-    right: 1px;
-    text-align: center;
-    top: 1px;
-    width: 24px;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius:3px;
-
-}
-
-.close:hover {
-    background: #0074d9;
-    color:#FFFFFF;
 }
 </style>

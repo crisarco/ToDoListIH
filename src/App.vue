@@ -74,13 +74,9 @@ export default {
   color: #2c3e50;
 }
 
-input {
-  margin-right: 10px;
-}
-
 h1 {
   font-family: 'Rampart One';
-  font-size: 3em;
+  font-size: 3.6em;
   color: #3498db;
 }
 
