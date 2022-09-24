@@ -1,28 +1,30 @@
 <template>
-  <div class="container-authview">
-    <div v-if="showsignin">
-      <SignIn />
-      <div class="texto-showsignin">
-        <p>¡Quiero registrarme!</p>
-        <button class="btn btn-info btn-md" @click="showSignIn">Registrarme</button>
+  <div class="auth-container">
+    <div class="container-authview">
+      <div v-if="showsignin">
+        <SignIn />
+        <div class="texto-showsignin">
+          <p>Want to become a Jedi?</p>
+          <button class="authbutton" id="registerbutton" @click="showSignIn">Register</button>
+        </div>
+      </div>
+      <div v-else>
+        <SignUp />
+        <div class="texto-showsignin">
+          <p>Already a Jedi?</p>
+          <button class="authbutton" @click="showSignIn">LogIn</button>
+        </div>
       </div>
     </div>
-    <div v-else>
-      <SignUp />
-      <div class="texto-showsignin">
-        <p>¡Ya estoy registrado!</p>
-        <button class="btn btn-info btn-md" @click="showSignIn">Entrar</button>
-      </div>
+    <div v-if="showModal">
+      <ModalBox @close="toggleModal" :modalTitle="modalTitle" :modalMsg="modalMsg">
+          <h1>{{ modalTitle }}</h1>
+          <p>{{ modalMsg }}</p>
+          <br>
+          <button @click="toggleModal">Close</button>
+      </ModalBox>
     </div>
-  </div>
-  <div v-if="showModal">
-    <ModalBox @close="toggleModal" :modalTitle="modalTitle" :modalMsg="modalMsg">
-        <h1>{{ modalTitle }}</h1>
-        <p>{{ modalMsg }}</p>
-        <br>
-        <button @click="toggleModal">Close</button>
-    </ModalBox>
-  </div>
+</div>
 </template>
 
 <script>
@@ -66,106 +68,41 @@ export default {
 .container-authview {
   display: flex;
   flex-direction: column;
-}
-
-.box {
-  width: 500px;
-  margin: 200px 0;
-  /* background-image: url('@/assets/nuveimg.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center; */
-}
-
-.shape1 {
-  position: relative;
-  height: 150px;
-  width: 150px;
-  background-color: #0074d9;
-  border-radius: 80px;
-  float: left;
-  margin-right: -50px;
-}
-
-.shape2 {
-  position: relative;
-  height: 150px;
-  width: 150px;
-  background-color: #0074d9;
-  border-radius: 80px;
-  margin-top: -30px;
-  float: left;
-}
-
-.shape3 {
-  position: relative;
-  height: 150px;
-  width: 150px;
-  background-color: #0074d9;
-  border-radius: 80px;
-  margin-top: -30px;
-  float: left;
-  margin-left: -31px;
-}
-
-.shape4 {
-  position: relative;
-  height: 150px;
-  width: 150px;
-  background-color: #0074d9;
-  border-radius: 80px;
-  margin-top: -25px;
-  float: left;
-  margin-left: -32px;
-}
-
-.shape5 {
-  position: relative;
-  height: 150px;
-  width: 150px;
-  background-color: #0074d9;
-  border-radius: 80px;
-  float: left;
-  margin-right: -48px;
-  margin-left: -32px;
-  margin-top: -30px;
-}
-
-.shape6 {
-  position: relative;
-  height: 150px;
-  width: 150px;
-  background-color: #0074d9;
-  border-radius: 80px;
-  float: left;
-  margin-right: -20px;
-  margin-top: -35px;
-}
-
-.shape7 {
-  position: relative;
-  height: 150px;
-  width: 150px;
-  background-color: #0074d9;
-  border-radius: 80px;
-  float: left;
-  margin-right: -20px;
-  margin-top: -57px;
-}
-
-.float {
-  position: absolute;
-  z-index: 2;
-}
-
-.form {
-  margin-left: 145px;
-  margin-top: 20px;
+  background-color: white;
+  margin: 15px;
+  font-size: 20px;
+  border-radius: 10px;
+  margin-left: 10em;
+  margin-right: 10em;
+  padding: 20px;
 }
 
 .texto-showsignin {
   align-items: center;
   justify-items: center;
   margin: 30px;
+}
+
+label {
+  display: inline-block;
+  margin: 10px 0 10px;
+}
+
+.authinput {
+  display: block;
+  padding: 5px;
+  width: 300px;
+  box-sizing: border-box;
+  border: 2px solid #ddd;
+  color: #555;
+  border-radius: 10px;
+}
+
+input:focus {
+  box-shadow: 0 0 10px 0 #EDFF00 inset, 0 0 10px 4px #EDFF00;
+}
+
+#registerbutton {
+  width: 180px;
 }
 </style>

@@ -7,24 +7,37 @@
       </button>
     </label>
     <div class="task-element" v-for="task in tasks" :key="task.id">
-      <label for="markascompleted">
-        <input type="checkbox" id="markascompleted">
-      </label>
       <p class="task">{{ task.title}}</p>
-      <p class="task">{{ transformDate(task.inserted_at) }}</p>
+      <!-- <p class="task">{{ transformDate(task.inserted_at) }}</p> -->
       <p v-if="task.is_complete" class="task">Done</p>
       <p v-else class="task">ToDo</p>
-      <button @click="modifyTaskParams(task.id, task.title, user.id)">Modify Task</button>
-      <button @click="handleDeleteTask(task.id, user.id)">Delete Task</button>
+      <button class="taskbutton" id="modifybutton"
+              @click="modifyTaskParams(task.id, task.title)">
+      </button>
+      <button class="taskbutton" id="donebutton"
+              @click="openDoneModal(task.id, task.is_complete)">
+      </button>
+      <button class="taskbutton" id="deletebutton"
+              @click="openDeleteModal(task.id)">
+      </button>
     </div>
   </div>
   <ModalBox @modify-task="handleModifyTask"
-            @close="handleCloseModal"
+            @close="handleCloseEditModal"
             theme="modifytask"
-            :setShowModal="showModal"
+            :setShowModal="showEditModal"
             :currentTaskId="currentTaskId"
-            :currentTaskTitle="currentTaskTitle"
-            :currentUserId="currentUserId"/>
+            :currentTaskTitle="currentTaskTitle"/>
+  <ModalBox @delete-task="handleDeleteTask"
+            @close="handleCloseDeleteModal"
+            theme="deletetask"
+            :setShowModal="showDeleteModal"/>
+  <ModalBox @done-task="handleDoneTask"
+            @close="handleCloseDoneModal"
+            theme="donetask"
+            :setShowModal="showDoneModal"
+            :currentTaskId="currentTaskId"
+            :currentTaskStatus="currentTaskStatus"/>
 </template>
 
 <script>
@@ -39,10 +52,12 @@ export default {
   data() {
     return {
       taskTitle: '',
-      showModal: false,
+      showEditModal: false,
+      showDeleteModal: false,
+      showDoneModal: false,
       currentTaskId: null,
       currentTaskTitle: '',
-      currentUserId: '',
+      currentTaskStatus: '',
     };
   },
   computed: {
@@ -50,7 +65,7 @@ export default {
     ...mapState(userStore, ['user']),
   },
   methods: {
-    ...mapActions(taskStore, ['insertTask', 'deleteTask', 'modifyTask']),
+    ...mapActions(taskStore, ['insertTask', 'deleteTask', 'modifyTask', 'modifyStateTask']),
 
     handleInsertTask(title, userId) {
       try {
@@ -60,9 +75,18 @@ export default {
         console.log(e);
       }
     },
-    handleDeleteTask(id, userId) {
+    handleDoneTask() {
       try {
-        this.deleteTask(id, userId);
+        this.modifyStateTask(this.currentTaskId, !this.currentTaskStatus);
+        this.handleCloseDoneModal();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    handleDeleteTask() {
+      try {
+        this.deleteTask(this.currentTaskId);
+        this.handleCloseDeleteModal();
       } catch (e) {
         console.log(e);
       }
@@ -72,26 +96,40 @@ export default {
       const dateFormated = newDate.toLocaleDateString();
       return dateFormated;
     },
-    modifyTaskParams(taskId, title, userId) {
+    modifyTaskParams(taskId, title) {
       this.currentTaskId = taskId;
       this.currentTaskTitle = title;
-      this.currentUserId = userId;
-      this.showModal = true;
+      this.showEditModal = true;
     },
     handleModifyTask(taskData) {
       try {
-        console.log(taskData);
-        this.modifyTask(taskData.title, taskData.taskId, this.user.id);
-        this.handleCloseModal();
+        this.modifyTask(taskData.title, taskData.taskId);
+        this.handleCloseEditModal();
       } catch (e) {
         console.log(e);
       }
     },
-    handleCloseModal() {
+    handleCloseEditModal() {
       this.currentTaskId = 0;
       this.currentTaskTitle = '';
-      this.currentUserId = '';
-      this.showModal = false;
+      this.showEditModal = false;
+    },
+    handleCloseDoneModal() {
+      this.currentTaskStatus = '';
+      this.showDoneModal = false;
+    },
+    openDoneModal(taskId, taskStatus) {
+      this.currentTaskId = taskId;
+      this.currentTaskStatus = taskStatus;
+      this.showDoneModal = true;
+    },
+    handleCloseDeleteModal() {
+      this.currentTaskId = 0;
+      this.showDeleteModal = false;
+    },
+    openDeleteModal(taskId) {
+      this.currentTaskId = taskId;
+      this.showDeleteModal = true;
     },
   },
 };
@@ -107,8 +145,17 @@ export default {
 .task-element {
   display: flex;
   justify-content: space-evenly;
-  column-gap: 10px;
+  align-items: center;
+  text-align: center;
   margin-bottom: 20px;
+  background-color: white;
+  box-sizing: border-box;
+  border: 2px solid #EDFF00;
+  border-radius: 10px;
+}
+
+.task {
+  font-size: 30px;
 }
 
 .addtasklabel {
@@ -123,13 +170,49 @@ export default {
   border: 2px solid #ddd;
   color: #555;
   border-radius: 10px;
-}
-
-.addtaskinput:focus {
-  box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+  margin-right: 10px;
 }
 
 .modalbutton {
   margin: 20px;
+}
+
+.taskbutton {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #3498db;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 30px;
+}
+
+.taskbutton:hover {
+  box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+  background-color: white;
+}
+
+#deletebutton {
+  background-image: url("@/assets/delete.png");
+  background-color: red;
+}
+
+#deletebutton:hover {
+  box-shadow: 0 0 10px 0 red inset, 0 0 10px 4px red;
+  background-color: white;
+}
+
+#modifybutton {
+  background-image: url("@/assets/pencil-2.png");
+}
+
+#donebutton {
+  background-image: url("@/assets/tick.png");
+  background-color: greenyellow;
+}
+
+#donebutton:hover {
+  box-shadow: 0 0 10px 0 greenyellow inset, 0 0 10px 4px greenyellow;
+  background-color: white;
 }
 </style>
