@@ -24,11 +24,11 @@ export default defineStore('tasks', {
       if (error) throw error;
       this.fetchTasks();
     },
-    async deleteTask(id, userId) {
+    async deleteTask(id) {
       const { error } = await supabase
         .from('tasks')
         .delete()
-        .match({ id, user_id: userId });
+        .match({ id });
       if (error) throw error;
       this.fetchTasks();
     },

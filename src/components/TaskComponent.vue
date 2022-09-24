@@ -15,19 +15,29 @@
               @click="modifyTaskParams(task.id, task.title)">
       </button>
       <button class="taskbutton" id="donebutton"
-              @click="toggleDoneButton(task.id, task.is_complete)">
+              @click="openDoneModal(task.id, task.is_complete)">
       </button>
       <button class="taskbutton" id="deletebutton"
-              @click="handleDeleteTask(task.id, user.id)">
+              @click="openDeleteModal(task.id)">
       </button>
     </div>
   </div>
   <ModalBox @modify-task="handleModifyTask"
-            @close="handleCloseModal"
+            @close="handleCloseEditModal"
             theme="modifytask"
-            :setShowModal="showModal"
+            :setShowModal="showEditModal"
             :currentTaskId="currentTaskId"
             :currentTaskTitle="currentTaskTitle"/>
+  <ModalBox @delete-task="handleDeleteTask"
+            @close="handleCloseDeleteModal"
+            theme="deletetask"
+            :setShowModal="showDeleteModal"/>
+  <ModalBox @done-task="handleDoneTask"
+            @close="handleCloseDoneModal"
+            theme="donetask"
+            :setShowModal="showDoneModal"
+            :currentTaskId="currentTaskId"
+            :currentTaskStatus="currentTaskStatus"/>
 </template>
 
 <script>
@@ -42,9 +52,12 @@ export default {
   data() {
     return {
       taskTitle: '',
-      showModal: false,
+      showEditModal: false,
+      showDeleteModal: false,
+      showDoneModal: false,
       currentTaskId: null,
       currentTaskTitle: '',
+      currentTaskStatus: '',
     };
   },
   computed: {
@@ -62,9 +75,18 @@ export default {
         console.log(e);
       }
     },
-    handleDeleteTask(id, userId) {
+    handleDoneTask() {
       try {
-        this.deleteTask(id, userId);
+        this.modifyStateTask(this.currentTaskId, !this.currentTaskStatus);
+        this.handleCloseDoneModal();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    handleDeleteTask() {
+      try {
+        this.deleteTask(this.currentTaskId);
+        this.handleCloseDeleteModal();
       } catch (e) {
         console.log(e);
       }
@@ -77,23 +99,37 @@ export default {
     modifyTaskParams(taskId, title) {
       this.currentTaskId = taskId;
       this.currentTaskTitle = title;
-      this.showModal = true;
+      this.showEditModal = true;
     },
     handleModifyTask(taskData) {
       try {
         this.modifyTask(taskData.title, taskData.taskId);
-        this.handleCloseModal();
+        this.handleCloseEditModal();
       } catch (e) {
         console.log(e);
       }
     },
-    handleCloseModal() {
+    handleCloseEditModal() {
       this.currentTaskId = 0;
       this.currentTaskTitle = '';
-      this.showModal = false;
+      this.showEditModal = false;
     },
-    toggleDoneButton(taskId, state) {
-      this.modifyStateTask(taskId, !state);
+    handleCloseDoneModal() {
+      this.currentTaskStatus = '';
+      this.showDoneModal = false;
+    },
+    openDoneModal(taskId, taskStatus) {
+      this.currentTaskId = taskId;
+      this.currentTaskStatus = taskStatus;
+      this.showDoneModal = true;
+    },
+    handleCloseDeleteModal() {
+      this.currentTaskId = 0;
+      this.showDeleteModal = false;
+    },
+    openDeleteModal(taskId) {
+      this.currentTaskId = taskId;
+      this.showDeleteModal = true;
     },
   },
 };
@@ -109,8 +145,13 @@ export default {
 .task-element {
   display: flex;
   justify-content: space-evenly;
-  column-gap: 10px;
+  align-items: center;
+  text-align: center;
   margin-bottom: 20px;
+  background-color: white;
+  box-sizing: border-box;
+  border: 2px solid #EDFF00;
+  border-radius: 10px;
 }
 
 .task {
@@ -153,6 +194,12 @@ export default {
 
 #deletebutton {
   background-image: url("@/assets/delete.png");
+  background-color: red;
+}
+
+#deletebutton:hover {
+  box-shadow: 0 0 10px 0 red inset, 0 0 10px 4px red;
+  background-color: white;
 }
 
 #modifybutton {
@@ -161,5 +208,11 @@ export default {
 
 #donebutton {
   background-image: url("@/assets/tick.png");
+  background-color: greenyellow;
+}
+
+#donebutton:hover {
+  box-shadow: 0 0 10px 0 greenyellow inset, 0 0 10px 4px greenyellow;
+  background-color: white;
 }
 </style>

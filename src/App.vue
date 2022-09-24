@@ -1,52 +1,24 @@
 <template>
-  <nav v-if="user !== null">
-    <button class="authbutton" @click="handleSignOut">SignOut</button>
-  </nav>
+  <NavBar v-if="user !== null"/>
+  <h1>jedI TASKS</h1>
+  <h4>May the force be with you...</h4>
+  <br>
   <router-view/>
-  <div v-if="showModal">
-    <ModalBox @close="toggleModal" :modalTitle="modalTitle" :modalMsg="modalMsg">
-        <h1>{{ modalTitle }}</h1>
-        <p>{{ modalMsg }}</p>
-        <br>
-        <button @click="toggleModal">Close</button>
-    </ModalBox>
-</div>
 </template>
 
 <script>
 import userStore from '@/store/user';
 import { mapState, mapActions } from 'pinia';
-import ModalBox from '@/components/ModalBox.vue';
+import NavBar from '@/components/NavBar.vue';
 
 export default {
   name: 'App',
-  components: { ModalBox },
-  data() {
-    return {
-      showModal: false,
-      modalTitle: '',
-      modalMsg: '',
-    };
-  },
+  components: { NavBar },
   computed: {
     ...mapState(userStore, ['user']),
   },
   methods: {
-    ...mapActions(userStore, ['fetchUser', 'signOut']),
-
-    handleSignOut() {
-      try {
-        this.signOut();
-        this.resetStore();
-      } catch (e) {
-        this.modalTitle = 'Error';
-        this.modalMsg = e;
-      }
-    },
-
-    toggleModal() {
-      this.showModal = !this.showModal;
-    },
+    ...mapActions(userStore, ['fetchUser']),
   },
 
   async created() {
@@ -71,35 +43,55 @@ export default {
   font-family: 'Patrick Hand', Arial, Helvetica, sans-serif;
   font-size: 24px;
   text-align: center;
-  color: #2c3e50;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  background-image: url('@/assets/galaxy.jpg');
+  background-size: 80%;
+}
+
+@font-face {
+  font-family: "jedifont";
+  src: url(@/common/SfDistantGalaxy.ttf);
+  font-weight: normal;
+  font-style: normal;
 }
 
 h1 {
-  font-family: 'Rampart One';
+  font-family: 'jedifont';
   font-size: 3.6em;
-  color: #3498db;
+  color:whitesmoke;
 }
 
 h3 {
-  font-family: 'Rampart One';
-  font-size: 2em;
-  color: #3498db;
+  font-family: 'jedifont';
+  font-size: 1.5em;
+}
+
+h4 {
+  font-family: 'jedifont';
+  color: whitesmoke;
+}
+
+p {
+  margin: 0;
+  padding: 0;
 }
 
 .authbutton {
-  border-color: #3498db;
-  color: #fff;
+  border-color: #EDFF00;
+  color: black;
   font-size: 20px;
   width: 150px;
   border-radius: 10px;
   padding: 5px 10px;
-  box-shadow: 0 0 40px 40px #3498db inset, 0 0 0 0 #3498db;
+  box-shadow: 0 0 40px 40px #EDFF00 inset, 0 0 0 0 #EDFF00;
   -webkit-transition: all 150ms ease-in-out;
   transition: all 150ms ease-in-out;
 }
 
 .authbutton:hover {
-  box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+  box-shadow: 0 0 10px 0 #EDFF00 inset, 0 0 10px 4px #EDFF00;
   color:#2c3e50;
   font-weight: 400;
   letter-spacing: 5px;
@@ -108,5 +100,9 @@ h3 {
 nav .authbutton {
   margin: 20px;
   float: right;
+}
+
+.text-auth {
+  color:black;
 }
 </style>

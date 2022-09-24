@@ -1,19 +1,18 @@
 <template>
   <div class="auth-container">
-    <h1>My things</h1>
     <div class="container-authview">
       <div v-if="showsignin">
         <SignIn />
         <div class="texto-showsignin">
-          <p>¡Quiero registrarme!</p>
-          <button class="authbutton" id="registerbutton" @click="showSignIn">Registrarme</button>
+          <p>Want to become a Jedi?</p>
+          <button class="authbutton" id="registerbutton" @click="showSignIn">Register</button>
         </div>
       </div>
       <div v-else>
         <SignUp />
         <div class="texto-showsignin">
-          <p>¡Ya estoy registrado!</p>
-          <button class="authbutton" @click="showSignIn">Entrar</button>
+          <p>Already a Jedi?</p>
+          <button class="authbutton" @click="showSignIn">LogIn</button>
         </div>
       </div>
     </div>
@@ -69,7 +68,7 @@ export default {
 .container-authview {
   display: flex;
   flex-direction: column;
-  background-color: #3498db;
+  background-color: white;
   margin: 15px;
   font-size: 20px;
   border-radius: 10px;
@@ -100,7 +99,7 @@ label {
 }
 
 input:focus {
-  box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+  box-shadow: 0 0 10px 0 #EDFF00 inset, 0 0 10px 4px #EDFF00;
 }
 
 #registerbutton {

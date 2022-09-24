@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-    <h1>My things</h1>
-    <br>
     <TaskComponent/>
   </div>
 </template>

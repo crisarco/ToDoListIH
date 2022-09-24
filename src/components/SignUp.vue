@@ -2,8 +2,8 @@
   <div class="container">
     <form class="form">
       <div class="form-group">
-        <label for="username" class="text-white">
-          Username:
+        <label for="username" class="text-auth">
+          Jedi name:
           <input v-model="email"
                 type="text"
                 name="username"
@@ -12,8 +12,8 @@
         </label><br>
       </div>
       <div class="form-group">
-        <label for="password" class="text-white">
-          Password:
+        <label for="password" class="text-auth">
+          Secret code:
           <input v-model="password"
                 type="text"
                 name="password"
@@ -23,7 +23,7 @@
       </div>
       <div class="form-group">
         <button class="authbutton" @click.prevent="handleSignUp">
-          SignUp
+          Accept me
         </button>
       </div>
     </form>

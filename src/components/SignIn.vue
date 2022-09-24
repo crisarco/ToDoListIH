@@ -3,7 +3,7 @@
     <form class="form">
       <div class="form-group">
         <label for="username" class="text-auth">
-          Username:
+          Jedi name:
           <input v-model="email"
                 type="text"
                 name="username"
@@ -13,7 +13,7 @@
       </div>
       <div class="form-group">
         <label for="password" class="text-auth">
-          Password:
+          Secret code:
           <input v-model="password"
                 type="text"
                 name="password"
