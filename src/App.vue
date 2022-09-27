@@ -97,11 +97,6 @@ p {
   letter-spacing: 5px;
 }
 
-nav .authbutton {
-  margin: 20px;
-  float: right;
-}
-
 .text-auth {
   color:black;
 }

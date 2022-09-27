@@ -1,25 +1,38 @@
 <template>
   <div class="taskcontainer">
+    <div class="add-task-container">
     <label for="addtask" class="addtasklabel">
       <input type="text" id="addtask" class="addtaskinput" v-model="taskTitle"/>
       <button class="authbutton" @click="handleInsertTask(taskTitle, user.id)">
         Add Task
       </button>
     </label>
-    <div class="task-element" v-for="task in tasks" :key="task.id">
-      <p class="task">{{ task.title}}</p>
+    </div>
+    <div class="task-element" v-for="task in tasks" :key="task.id"
+        :class="task.is_complete ? 'done-task' : 'todo-task'">
+      <p v-if="task.is_complete" class="task-status">Done</p>
+      <p v-else class="task-status">ToDo</p>
+      <div class="task-title-container">
+        <p class="task">{{ task.title}}</p>
       <!-- <p class="task">{{ transformDate(task.inserted_at) }}</p> -->
-      <p v-if="task.is_complete" class="task">Done</p>
-      <p v-else class="task">ToDo</p>
-      <button class="taskbutton" id="modifybutton"
-              @click="modifyTaskParams(task.id, task.title)">
+      </div>
+      <div class="button-container">
+        <button class="taskbutton" id="modifyButton"
+              @click="modifyTaskParams(task.id, task.title)"
+              title="Modify Task"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              data-bs-html="true">
+        </button>
+      <button class="taskbutton" id="doneButton"
+              @click="openDoneModal(task.id, task.is_complete)"
+              title="Mark Done/Undone">
       </button>
-      <button class="taskbutton" id="donebutton"
-              @click="openDoneModal(task.id, task.is_complete)">
+      <button class="taskbutton" id="deleteButton"
+              @click="openDeleteModal(task.id)"
+              title="Delete Task">
       </button>
-      <button class="taskbutton" id="deletebutton"
-              @click="openDeleteModal(task.id)">
-      </button>
+      </div>
     </div>
   </div>
   <ModalBox @modify-task="handleModifyTask"
@@ -137,7 +150,6 @@ export default {
 
 <style>
 .taskcontainer {
-  width: 800px;
   display: flex;
   flex-direction: column;
   align-self: center;
@@ -155,7 +167,21 @@ export default {
 }
 
 .task {
-  font-size: 30px;
+  font-size: 22px;
+  max-width: 400px;
+  word-break: break-all;
+  padding: 10px;
+}
+
+.task-status {
+  font-size: 22px;
+  padding: 10px;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  padding: 5px;
 }
 
 .addtasklabel {
@@ -192,27 +218,58 @@ export default {
   background-color: white;
 }
 
-#deletebutton {
-  background-image: url("@/assets/delete.png");
-  background-color: red;
+#deleteButton {
+  background-image: url("@/assets/BB8.PNG");
+  background-color: white;
 }
 
-#deletebutton:hover {
+#deleteButton:hover {
   box-shadow: 0 0 10px 0 red inset, 0 0 10px 4px red;
   background-color: white;
 }
 
-#modifybutton {
-  background-image: url("@/assets/pencil-2.png");
+#modifyButton {
+  background-image: url("@/assets/R2D2.PNG");
+  background-color: white;
 }
 
-#donebutton {
-  background-image: url("@/assets/tick.png");
-  background-color: greenyellow;
+#doneButton {
+  background-image: url("@/assets/C3PO.PNG");
+  background-color: white;
 }
 
-#donebutton:hover {
+#doneButton:hover {
   box-shadow: 0 0 10px 0 greenyellow inset, 0 0 10px 4px greenyellow;
   background-color: white;
+}
+
+.done-task {
+  border: 2px solid greenyellow;
+  box-shadow: 0 0 10px 0 greenyellow inset, 0 0 10px 4px greenyellow;
+  background-color: rgba(173, 255, 47, 0.4);
+}
+
+@media only screen and (max-width: 700px) {
+  .task-element {
+    flex-direction: column;
+    width: 60%;
+    align-self: center;
+  }
+
+  .task-title-container {
+    flex-direction: column;
+  }
+
+  .addtasklabel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .addtaskinput {
+    width: 300px;
+  }
+
 }
 </style>
