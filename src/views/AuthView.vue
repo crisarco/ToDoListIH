@@ -75,6 +75,7 @@ export default {
   margin-left: 10em;
   margin-right: 10em;
   padding: 20px;
+  box-shadow: 0 0 10px 0 #EDFF00 inset, 0 0 10px 4px #EDFF00;
 }
 
 .texto-showsignin {
@@ -98,11 +99,29 @@ label {
   border-radius: 10px;
 }
 
-input:focus {
+.authinput:focus {
   box-shadow: 0 0 10px 0 #EDFF00 inset, 0 0 10px 4px #EDFF00;
 }
 
 #registerbutton {
   width: 180px;
+}
+
+@media only screen and (max-width: 800px) {
+  .container-authview {
+    margin-left: 5em;
+    margin-right: 5em;
+  }
+}
+
+@media only screen and (max-width: 560px) {
+  .authinput {
+    width: 250px;
+  }
+
+  .container-authview {
+    margin-left: 2em;
+    margin-right: 2em;
+  }
 }
 </style>

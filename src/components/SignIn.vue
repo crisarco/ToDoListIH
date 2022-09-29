@@ -5,24 +5,29 @@
         <label for="username" class="text-auth">
           Jedi name:
           <input v-model="email"
-                type="text"
+                type="email"
+                pattern="[^ @]*@[^ @]*"
+                placeholder="Email"
                 name="username"
                 id="username"
-                class="authinput" />
+                class="authinput"
+                required />
         </label><br>
       </div>
       <div class="form-group">
         <label for="password" class="text-auth">
           Secret code:
           <input v-model="password"
-                type="text"
+                type="password"
+                placeholder="Password"
                 name="password"
                 id="password"
-                class="authinput" />
+                class="authinput"
+                required />
         </label>
         <br>
         <div v-if="error">
-          <p class="error">*</p>
+          <p class="error">*{{ error.message }}</p>
         </div>
         <br>
       </div>

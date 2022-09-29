@@ -17,7 +17,12 @@ export default defineStore('user', {
         email,
         password,
       });
-      if (error) throw error;
+      if (error) {
+        this.error = error;
+        setTimeout(() => {
+          this.error = null;
+        }, 5000);
+      }
       if (user) this.user = user;
     },
     async signOut() {
