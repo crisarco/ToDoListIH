@@ -5,22 +5,33 @@
         <label for="username" class="text-auth">
           Jedi name:
           <input v-model="email"
-                type="text"
+                type="email"
+                pattern="[^ @]*@[^ @]*"
+                placeholder="Email"
                 name="username"
                 id="username"
-                class="authinput" />
+                class="authinput"
+                required />
         </label><br>
       </div>
       <div class="form-group">
         <label for="password" class="text-auth">
           Secret code:
           <input v-model="password"
-                type="text"
+                type="password"
+                placeholder="Password"
                 name="password"
                 id="password"
-                class="authinput" />
-        </label><br><br>
+                class="authinput"
+                required />
+        </label>
+        <br>
+        <div v-if="error">
+          <p class="error">*{{ error.message }}</p>
+        </div>
+        <br>
       </div>
+
       <div class="form-group">
         <button class="authbutton" @click.prevent="handleSignIn">
           LogIn
@@ -31,7 +42,7 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia';
+import { mapActions, mapState } from 'pinia';
 import userStore from '@/store/user';
 
 export default {
@@ -40,8 +51,11 @@ export default {
     return {
       email: '',
       password: '',
-      error: '',
+      errorMsg: '',
     };
+  },
+  computed: {
+    ...mapState(userStore, ['error']),
   },
   methods: {
     ...mapActions(userStore, ['signIn']),
@@ -52,9 +66,15 @@ export default {
           this.signIn(this.email, this.password);
         }
       } catch (e) {
-        console.log(e);
+        this.errorMsg = e;
       }
     },
   },
 };
 </script>
+
+<style>
+.error {
+  color: red;
+}
+</style>

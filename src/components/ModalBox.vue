@@ -11,7 +11,7 @@
           </div>
         </div>
         <label for="modifytask">
-          <input class="addtaskinput" type="text"
+          <input class="modifytaskinput" type="text"
                   v-model="taskTitleModify"
                   :placeholder=currentTaskTitle />
           <button class="modifybutton modalbutton" @click="handleModifyTask">
@@ -155,6 +155,20 @@ export default {
 .modifybutton {
   border-color: #3498db;
   box-shadow: 0 0 40px 40px #3498db inset, 0 0 0 0 #3498db;
+}
+
+.modifytaskinput {
+  padding: 10px 6px;
+  width: 400px;
+  box-sizing: border-box;
+  border: 2px solid #ddd;
+  color: #555;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+.modifytaskinput:focus {
+  box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
 }
 
 .deletebox h3 {

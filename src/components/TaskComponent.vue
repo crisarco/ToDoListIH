@@ -19,10 +19,7 @@
       <div class="button-container">
         <button class="taskbutton" id="modifyButton"
               @click="modifyTaskParams(task.id, task.title)"
-              title="Modify Task"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              data-bs-html="true">
+              title="Modify Task">
         </button>
       <button class="taskbutton" id="doneButton"
               @click="openDoneModal(task.id, task.is_complete)"
@@ -160,9 +157,10 @@ export default {
   align-items: center;
   text-align: center;
   margin-bottom: 20px;
-  background-color: white;
+  background-color: rgba(245, 247, 216, 0.8);
   box-sizing: border-box;
   border: 2px solid #EDFF00;
+  box-shadow: 0 0 10px 0 #EDFF00 inset, 0 0 10px 4px #EDFF00;
   border-radius: 10px;
 }
 
@@ -199,6 +197,10 @@ export default {
   margin-right: 10px;
 }
 
+.addtaskinput:focus {
+  box-shadow: 0 0 10px 0 #EDFF00 inset, 0 0 10px 4px #EDFF00;
+}
+
 .modalbutton {
   margin: 20px;
 }
@@ -206,6 +208,7 @@ export default {
 .taskbutton {
   width: 50px;
   height: 50px;
+  border: 2px solid #ddd;
   border-radius: 50%;
   background-color: #3498db;
   background-position: center;
@@ -246,7 +249,11 @@ export default {
 .done-task {
   border: 2px solid greenyellow;
   box-shadow: 0 0 10px 0 greenyellow inset, 0 0 10px 4px greenyellow;
-  background-color: rgba(173, 255, 47, 0.4);
+  background-color: rgba(173, 255, 47, 0.7);
+}
+
+.task-element:hover {
+  box-shadow: 0 5px 35px 0px rgba(0,0,0,.1);
 }
 
 @media only screen and (max-width: 700px) {
