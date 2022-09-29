@@ -11,7 +11,7 @@
           </div>
         </div>
         <label for="modifytask">
-          <input class="addtaskinput" type="text"
+          <input class="addtaskinput modifytaskinput" type="text"
                   v-model="taskTitleModify"
                   :placeholder=currentTaskTitle />
           <button class="modifybutton modalbutton" @click="handleModifyTask">
@@ -154,6 +154,10 @@ export default {
 
 .modifybutton {
   border-color: #3498db;
+  box-shadow: 0 0 40px 40px #3498db inset, 0 0 0 0 #3498db;
+}
+
+.modifytaskinput::selection {
   box-shadow: 0 0 40px 40px #3498db inset, 0 0 0 0 #3498db;
 }
 

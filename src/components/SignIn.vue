@@ -19,8 +19,14 @@
                 name="password"
                 id="password"
                 class="authinput" />
-        </label><br><br>
+        </label>
+        <br>
+        <div v-if="error">
+          <p class="error">*</p>
+        </div>
+        <br>
       </div>
+
       <div class="form-group">
         <button class="authbutton" @click.prevent="handleSignIn">
           LogIn
@@ -31,7 +37,7 @@
 </template>
 
 <script>
-import { mapActions } from 'pinia';
+import { mapActions, mapState } from 'pinia';
 import userStore from '@/store/user';
 
 export default {
@@ -40,8 +46,11 @@ export default {
     return {
       email: '',
       password: '',
-      error: '',
+      errorMsg: '',
     };
+  },
+  computed: {
+    ...mapState(userStore, ['error']),
   },
   methods: {
     ...mapActions(userStore, ['signIn']),
@@ -52,9 +61,15 @@ export default {
           this.signIn(this.email, this.password);
         }
       } catch (e) {
-        console.log(e);
+        this.errorMsg = e;
       }
     },
   },
 };
 </script>
+
+<style>
+.error {
+  color: red;
+}
+</style>

@@ -4,6 +4,7 @@ import supabase from '../supabase/index';
 export default defineStore('user', {
   state: () => ({
     user: null,
+    error: '',
   }),
 
   actions: {
@@ -29,7 +30,12 @@ export default defineStore('user', {
         email,
         password,
       });
-      if (error) throw error;
+      if (error) {
+        this.error = error;
+        setTimeout(() => {
+          this.error = null;
+        }, 5000);
+      }
       if (user) this.user = user;
     },
   },

@@ -38,7 +38,7 @@ export default {
 
 <style>
 nav {
-  position: fixed;
+  position: inherit;
   width: 100%;
 }
 

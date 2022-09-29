@@ -19,10 +19,7 @@
       <div class="button-container">
         <button class="taskbutton" id="modifyButton"
               @click="modifyTaskParams(task.id, task.title)"
-              title="Modify Task"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              data-bs-html="true">
+              title="Modify Task">
         </button>
       <button class="taskbutton" id="doneButton"
               @click="openDoneModal(task.id, task.is_complete)"

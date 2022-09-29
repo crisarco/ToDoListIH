@@ -1,9 +1,9 @@
 <template>
-  <NavBar v-if="user !== null"/>
-  <h1>jedI TASKS</h1>
-  <h4>May the force be with you...</h4>
-  <br>
-  <router-view/>
+    <NavBar v-if="user !== null"/>
+    <h1>JEDI TASKS</h1>
+    <h4>May the force be with you...</h4>
+    <br>
+    <router-view/>
 </template>
 
 <script>
@@ -24,7 +24,6 @@ export default {
   async created() {
     try {
       await this.fetchUser();
-      console.log(this.user);
       if (!this.user) {
         this.$router.push({ path: '/auth' });
       } else {
@@ -46,8 +45,10 @@ export default {
   color: black;
   display: flex;
   flex-direction: column;
+}
+body {
   background-image: url('@/assets/galaxy.jpg');
-  background-size: 80%;
+  background-size: cover;
 }
 
 @font-face {
