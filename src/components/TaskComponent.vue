@@ -167,7 +167,7 @@ export default {
 .task {
   font-size: 22px;
   max-width: 400px;
-  word-break: break-all;
+  word-break: break-word;
   padding: 10px;
 }
 
