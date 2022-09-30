@@ -14,7 +14,6 @@
       <p v-else class="task-status">ToDo</p>
       <div class="task-title-container">
         <p class="task">{{ task.title}}</p>
-      <!-- <p class="task">{{ transformDate(task.inserted_at) }}</p> -->
       </div>
       <div class="button-container">
         <button class="taskbutton" id="modifyButton"
@@ -68,6 +67,7 @@ export default {
       currentTaskId: null,
       currentTaskTitle: '',
       currentTaskStatus: '',
+      errorMsg: '',
     };
   },
   computed: {
@@ -82,7 +82,7 @@ export default {
         this.insertTask(title, userId);
         this.taskTitle = '';
       } catch (e) {
-        console.log(e);
+        this.errorMsg = e;
       }
     },
     handleDoneTask() {
@@ -90,7 +90,7 @@ export default {
         this.modifyStateTask(this.currentTaskId, !this.currentTaskStatus);
         this.handleCloseDoneModal();
       } catch (e) {
-        console.log(e);
+        this.errorMsg = e;
       }
     },
     handleDeleteTask() {
@@ -98,13 +98,8 @@ export default {
         this.deleteTask(this.currentTaskId);
         this.handleCloseDeleteModal();
       } catch (e) {
-        console.log(e);
+        this.errorMsg = e;
       }
-    },
-    transformDate(date) {
-      const newDate = new Date(date);
-      const dateFormated = newDate.toLocaleDateString();
-      return dateFormated;
     },
     modifyTaskParams(taskId, title) {
       this.currentTaskId = taskId;
@@ -116,7 +111,7 @@ export default {
         this.modifyTask(taskData.title, taskData.taskId);
         this.handleCloseEditModal();
       } catch (e) {
-        console.log(e);
+        this.errorMsg = e;
       }
     },
     handleCloseEditModal() {
