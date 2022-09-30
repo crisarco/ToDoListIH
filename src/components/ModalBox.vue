@@ -55,7 +55,6 @@
     </div>
   </div>
 </template>
-<!-- this.modifyStateTask(taskId, !state); -->
 
 <script>
 export default {
@@ -64,6 +63,7 @@ export default {
     return {
       showModal: false,
       taskTitleModify: '',
+      errorMsg: '',
     };
   },
   props: {
@@ -86,7 +86,7 @@ export default {
         this.$emit('modify-task', taskData);
         this.taskTitleModify = '';
       } catch (e) {
-        console.log(e);
+        this.errorMsg = e;
       }
     },
     handleDeleteTask() {
@@ -204,5 +204,33 @@ export default {
 
 .donebutton:hover {
   box-shadow: 0 0 10px 0 greenyellow inset, 0 0 10px 4px greenyellow;
+}
+
+@media only screen and (max-width: 550px) {
+.modalbox {
+  width: 350px;
+}
+
+.modalbutton {
+  width: 100px;
+}
+
+.modaltextcontainer h3 {
+  font-size: 20px;
+}
+
+.modaltextcontainer p {
+  font-size: 18px;
+}
+
+.modalimg {
+  width: 90px;
+  height: 70px;
+  margin-left: 20px;
+}
+
+.modifytaskinput{
+  width: 300px;
+}
 }
 </style>

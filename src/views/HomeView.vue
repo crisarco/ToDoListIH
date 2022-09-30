@@ -12,6 +12,11 @@ import TaskComponent from '@/components/TaskComponent.vue';
 
 export default {
   name: 'HomeView',
+  data() {
+    return {
+      errorMsg: '',
+    };
+  },
   components: { TaskComponent },
   computed: {
     ...mapState(userStore, ['user']),
@@ -26,7 +31,7 @@ export default {
         this.signOut();
         this.resetStore();
       } catch (e) {
-        console.log(e);
+        this.errorMsg = e;
       }
     },
   },
@@ -41,7 +46,7 @@ export default {
     try {
       this.fetchTasks();
     } catch (error) {
-      console.error(error);
+      this.errorMsg = error;
     }
   },
 };
